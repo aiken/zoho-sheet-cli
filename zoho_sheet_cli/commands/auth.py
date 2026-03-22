@@ -50,7 +50,7 @@ def init(client_id: str, client_secret: str, refresh_token: str, region: str) ->
     config.save()
     
     console.print(Panel.fit(
-        "✓ Authentication configuration saved successfully!\n\n"
+        "[OK] Authentication configuration saved successfully!\n\n"
         f"Configuration file: {config.config_path}\n"
         f"Region: {region.upper()}",
         title="Success",
@@ -69,30 +69,30 @@ def status() -> None:
     table.add_column("Status", style="yellow")
     
     # Client ID
-    client_id_status = "✓ Set" if config.client_id else "✗ Missing"
+    client_id_status = "[OK]" if config.client_id else "[MISSING]"
     client_id_display = config.client_id[:10] + "..." if config.client_id else "Not set"
     table.add_row("Client ID", client_id_display, client_id_status)
     
     # Client Secret
-    secret_status = "✓ Set" if config.client_secret else "✗ Missing"
+    secret_status = "[OK]" if config.client_secret else "[MISSING]"
     secret_display = "*" * 10 if config.client_secret else "Not set"
     table.add_row("Client Secret", secret_display, secret_status)
     
     # Refresh Token
-    token_status = "✓ Set" if config.refresh_token else "✗ Missing"
+    token_status = "[OK]" if config.refresh_token else "[MISSING]"
     token_display = config.refresh_token[:10] + "..." if config.refresh_token else "Not set"
     table.add_row("Refresh Token", token_display, token_status)
     
     # Region
-    table.add_row("Region", config.region.upper(), "✓ Set")
+    table.add_row("Region", config.region.upper(), "[OK]")
     
     console.print(table)
     
     if config.is_authenticated:
-        console.print("\n[green]✓ Authentication is configured correctly.[/green]")
+        console.print("\n[green][OK] Authentication is configured correctly.[/green]")
     else:
         console.print(
-            "\n[red]✗ Authentication is incomplete. "
+            "\n[red][FAIL] Authentication is incomplete. "
             "Please run 'zsheet auth init' to configure.[/red]"
         )
 
@@ -104,9 +104,9 @@ def refresh() -> None:
     
     try:
         client = ZohoSheetClient()
-        console.print("[green]✓ Access token refreshed successfully![/green]")
+        console.print("[green][OK] Access token refreshed successfully![/green]")
     except Exception as e:
-        console.print(f"[red]✗ Failed to refresh token: {e}[/red]")
+        console.print(f"[red][FAIL] Failed to refresh token: {e}[/red]")
 
 
 @auth_group.command()
@@ -118,24 +118,24 @@ def guide() -> None:
 1. Visit [link]https://api-console.zoho.com/[/link]
 
 2. Click "Add Client" and choose one of:
-   • Self Client - for personal use
-   • Server-based Applications - for production
+   - Self Client - for personal use
+   - Server-based Applications - for production
 
 3. Enter the required details:
-   • Client Name: "Zoho Sheet CLI"
-   • Homepage URL: (optional)
-   • Authorized Redirect URIs: http://localhost:8080/callback
+   - Client Name: "Zoho Sheet CLI"
+   - Homepage URL: (optional)
+   - Authorized Redirect URIs: http://localhost:8080/callback
 
 4. Click "Create" and note down:
-   • Client ID
-   • Client Secret
+   - Client ID
+   - Client Secret
 
 5. Generate Refresh Token:
    a. Go to your client settings
    b. Click "Generate Code" tab
    c. Select the required scopes:
-      • ZohoSheet.data.ALL
-      • ZohoSheet.workbooks.ALL
+      - ZohoSheet.data.ALL
+      - ZohoSheet.workbooks.ALL
    d. Set the duration (e.g., 10 minutes)
    e. Click "Generate"
    f. Copy the generated code
