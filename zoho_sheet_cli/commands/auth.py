@@ -115,49 +115,42 @@ def guide() -> None:
     guide_text = """
 [bold cyan]How to get Zoho API Credentials:[/bold cyan]
 
-1. Visit [link]https://api-console.zoho.com/[/link]
-
-2. Click "Add Client" and choose one of:
-   - Self Client - for personal use
-   - Server-based Applications - for production
-
-3. Enter the required details:
-   - Client Name: "Zoho Sheet CLI"
+[bold]Step 1: Create Client in API Console[/bold]
+1. Visit https://api-console.zoho.com/
+2. Click "Add Client" -> "Server-based Applications"
+3. Fill in:
+   - Client Name: Zoho Sheet CLI
    - Homepage URL: (optional)
    - Authorized Redirect URIs: http://localhost:8080/callback
+4. Click "Create" and save Client ID and Client Secret
 
-4. Click "Create" and note down:
-   - Client ID
-   - Client Secret
+[bold]Step 2: Get Authorization Code[/bold]
+Visit this URL in your browser:
+[link]https://accounts.zoho.com/oauth/v2/auth?response_type=code&client_id=YOUR_CLIENT_ID&scope=ZohoSheet.dataAPI.ALL&redirect_uri=http://localhost:8080/callback&access_type=offline&prompt=consent[/link]
 
-5. Generate Refresh Token:
-   a. Go to your client settings
-   b. Click "Generate Code" tab
-   c. Select the required scopes (try one of these):
-      Option 1: ZohoSheet.data.ALL (full access)
-      Option 2: ZohoSheet.data.READ,ZohoSheet.data.CREATE,ZohoSheet.data.UPDATE,ZohoSheet.data.DELETE
-      Option 3: If above invalid, use Scope dropdown to select individually:
-                - ZohoSheet.data.READ
-                - ZohoSheet.data.CREATE
-                - ZohoSheet.data.UPDATE
-                - ZohoSheet.data.DELETE
-   d. Set the duration (e.g., 10 minutes)
-   e. Click "Generate"
-   f. Copy the generated code
+Or use this scope for specific permissions:
+- ZohoSheet.dataAPI.READ (read workbooks/sheets)
+- ZohoSheet.dataAPI.CREATE (create workbooks/sheets)
+- ZohoSheet.dataAPI.UPDATE (update cells/data)
+- ZohoSheet.dataAPI.DELETE (delete workbooks/sheets)
+- ZohoSheet.dataAPI.ALL (full access - recommended)
 
-   Note: If "invalid scope" error, use browser URL method:
-   https://accounts.zoho.com/oauth/v2/auth?scope=ZohoSheet.data.ALL&client_id=YOUR_CLIENT_ID&state=testing&response_type=code&redirect_uri=http://localhost:8080/callback&access_type=offline
+After authorization, copy the "code" from the redirect URL.
 
-6. Exchange code for tokens using:
-   curl -X POST 'https://accounts.zoho.com/oauth/v2/token' \\
-     -d 'code=<GENERATED_CODE>' \\
-     -d 'client_id=<CLIENT_ID>' \\
-     -d 'client_secret=<CLIENT_SECRET>' \\
-     -d 'redirect_uri=http://localhost:8080/callback' \\
-     -d 'grant_type=authorization_code'
+[bold]Step 3: Exchange Code for Tokens[/bold]
+Run this curl command:
+[code]
+curl -X POST "https://accounts.zoho.com/oauth/v2/token" \\
+  -d "code=YOUR_AUTH_CODE" \\
+  -d "client_id=YOUR_CLIENT_ID" \\
+  -d "client_secret=YOUR_CLIENT_SECRET" \\
+  -d "redirect_uri=http://localhost:8080/callback" \\
+  -d "grant_type=authorization_code"
+[/code]
 
-7. Save the [bold]refresh_token[/bold] from the response
+[bold]Step 4: Save Refresh Token[/bold]
+From the response, save the "refresh_token" value.
 
-[bold green]Ready to use![/bold green] Run [bold]zsheet auth init[/bold] to configure.
+[bold green]Now run: zsheet auth init[/bold green] to configure.
 """
     console.print(Panel(guide_text, title="API Credentials Guide", border_style="blue"))
