@@ -20,7 +20,7 @@ class Config:
         "us": "https://sheet.zoho.com/api/v2",
         "eu": "https://sheet.zoho.eu/api/v2",
         "in": "https://sheet.zoho.in/api/v2",
-        "cn": "https://sheet.zoho.com.cn/api/v2",
+        "cn": "https://sheet.zohoapis.com.cn/api/v2",
         "au": "https://sheet.zoho.com.au/api/v2",
         "jp": "https://sheet.zoho.jp/api/v2",
     }
