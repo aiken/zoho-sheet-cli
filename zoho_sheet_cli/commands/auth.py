@@ -133,12 +133,20 @@ def guide() -> None:
 5. Generate Refresh Token:
    a. Go to your client settings
    b. Click "Generate Code" tab
-   c. Select the required scopes:
-      - ZohoSheet.data.ALL
-      - ZohoSheet.workbooks.ALL
+   c. Select the required scopes (try one of these):
+      Option 1: ZohoSheet.data.ALL (full access)
+      Option 2: ZohoSheet.data.READ,ZohoSheet.data.CREATE,ZohoSheet.data.UPDATE,ZohoSheet.data.DELETE
+      Option 3: If above invalid, use Scope dropdown to select individually:
+                - ZohoSheet.data.READ
+                - ZohoSheet.data.CREATE
+                - ZohoSheet.data.UPDATE
+                - ZohoSheet.data.DELETE
    d. Set the duration (e.g., 10 minutes)
    e. Click "Generate"
    f. Copy the generated code
+
+   Note: If "invalid scope" error, use browser URL method:
+   https://accounts.zoho.com/oauth/v2/auth?scope=ZohoSheet.data.ALL&client_id=YOUR_CLIENT_ID&state=testing&response_type=code&redirect_uri=http://localhost:8080/callback&access_type=offline
 
 6. Exchange code for tokens using:
    curl -X POST 'https://accounts.zoho.com/oauth/v2/token' \\
