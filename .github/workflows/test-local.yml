@@ -5,6 +5,12 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:  # 允许手动触发
+    inputs:
+      debug_enabled:
+        description: 'Enable debug mode'
+        type: boolean
+        default: false
 
 jobs:
   test:
